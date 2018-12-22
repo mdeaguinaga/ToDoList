@@ -53,7 +53,38 @@ class ToDoListViewController: UITableViewController {
     }
     
     /************************************************
+     //  tableView
+     Deletes the item in the list and updates the
+     itemArray
+     *************************************************/
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // delete item at indexPath
+            self.itemArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            print(self.itemArray)
+            self.defaults.set(self .itemArray, forKey: "ToDoListArray")
+            self.tableView.reloadData()
+        }
+        /*
+        let share = UITableViewRowAction(style: .default, title: "Share") { (action, indexPath) in
+            // share item at indexPath
+            print("I want to share: \(self.itemArray[indexPath.row])")
+        }
+        share.backgroundColor = UIColor.lightGray
+        return [delete, share]
+        */
+        return [delete]
+    }
+    
+    
+    
+    /************************************************
      // Add new item
+     1- Manage the add buttom (+) at the top ot the
+     app and display the add item window
+     2- Once the item is added, updates the ithemArray
+     and save it on the back (database)
     *************************************************/
     @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
         
